@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether Weather</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 50%, #1e3a8a 100%);
+            min-height: 100vh; font-family: 'Inter', sans-serif; color: white;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md">
+        <div class="mb-6 relative">
+            <input type="text" id="cityInput" placeholder="Search city..." 
+                   class="w-full p-4 pl-6 rounded-2xl glass outline-none text-white placeholder-white/50 focus:ring-2 ring-white/30 transition-all">
+            <button id="searchBtn" class="absolute right-4 top-4 opacity-70 hover:opacity-100">🔍</button>
+        </div>
+
+        <div class="glass rounded-[3rem] overflow-hidden shadow-2xl">
+            <div class="p-8 pb-4">
+                <p class="text-white/50 text-xs uppercase tracking-widest font-bold">Current Weather</p>
+                <h2 id="locationName" class="text-3xl font-bold mt-1">San Francisco</h2>
+            </div>
+
+            <div class="text-center py-6">
+                <h1 id="mainTemp" class="text-[9rem] font-black tracking-tighter leading-none">24°</h1>
+                <p id="weatherDesc" class="text-white/60 text-xl font-light">Partly Cloudy</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 p-8 pt-0">
+                <div class="glass bg-white/5 p-5 rounded-3xl text-center">
+                    <span class="text-2xl">💨</span>
+                    <p class="text-white/40 text-[10px] uppercase font-black mt-2">Wind</p>
+                    <p id="windVal" class="text-xl font-bold">12 km/h</p>
+                </div>
+                <div class="glass bg-white/5 p-5 rounded-3xl text-center">
+                    <span class="text-2xl">💧</span>
+                    <p class="text-white/40 text-[10px] uppercase font-black mt-2">Humidity</p>
+                    <p id="humVal" class="text-xl font-bold">45%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('cityInput');
+        const btn = document.getElementById('searchBtn');
+        function updateWeather(cityName) {
+            fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${cityName}&count=1`)
+                .then(res => res.json())
+                .then(geoData => {
+                    if (!geoData.results) throw new Error("City not found");
+                    const { latitude, longitude, name, country } = geoData.results[0];
+                    document.getElementById('locationName').innerText = `${name}, ${country}`;
+                    return fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=relative_humidity_2m`);
+                })
+                .then(res => res.json())
+                .then(weatherData => {
+                    const current = weatherData.current_weather;
+                    document.getElementById('mainTemp').innerText = `${Math.round(current.temperature)}°`;
+                    document.getElementById('windVal').innerText = `${current.windspeed} km/h`;
+                    document.getElementById('humVal').innerText = `${weatherData.hourly.relative_humidity_2m[0]}%`;
+                    document.getElementById('weatherDesc').innerText = "Clear Skies"; 
+                })
+                .catch(err => alert(err.message));
+        }
+
+        btn.addEventListener('click', () => updateWeather(input.value));
+        input.addEventListener('keypress', (e) => { if(e.key === 'Enter') updateWeather(input.value); });
+        updateWeather('San Francisco');
+    </script>
+</body>
+</html>

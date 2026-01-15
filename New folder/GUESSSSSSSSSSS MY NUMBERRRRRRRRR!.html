@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undertale Final Boss UI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style3.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="enemy-area">
+            <img src="download-removebg-preview.png" alt="Boss Character" class="boss-img">
+            <audio id="sansVoice" src="voice_sans.mp3" preload="auto"></audio>
+            <div class="enemy-nameplate">
+            <div class="typewrter">
+                <p id="sansDialogueBox">
+                    hey kid.<br><br>
+                    you look bored.<br><br>
+                    how about a guessing game?<br><br>
+                    don't worry.<br><br>
+                    i only cheat a little.
+                </p>
+            </div>
+        </div>
+        </div>
+        <div class="battle-box">
+            <div class="dialogue-box">
+                <input type="number" id="dialogues" placeholder="Enter your guess">
+            </div>
+
+            <div class="action-area">
+                <div class="player-stats">
+                    <div class="typewrter"><p>Name: <span id="name">Player</span></p></div>
+                    <br><br>
+                    <div class="typewrter"><p>HP: <span id="hp">20</span> / 20</p></div>
+                    <br><br>
+                    <div class="typewrter"><p>LV: <span id="level">1</span></p></div>
+                </div>
+
+                <div class="menu-box">
+                    <button class="menu-btn fight-btn" id="red-button">FIGHT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>    
+    var sansVoice = document.getElementById('sansVoice');
+    var dialogueInput = document.getElementById('dialogues');
+    var dialogueBox = document.getElementById('sansDialogueBox');
+    var hpDisplay = document.getElementById('hp');
+    var levelDisplay = document.getElementById('level');
+    var fightBtn = document.getElementById('red-button');
+
+    var correctNumber = Math.ceil(Math.random() * 20);
+    var typingTimer = null;
+    function typeWriter(text) {
+        if (typingTimer) {
+            clearInterval(typingTimer);
+        }
+
+        dialogueBox.textContent = "";
+        var i = 0;
+
+        typingTimer = setInterval(function() {
+            dialogueBox.textContent += text.charAt(i);
+
+            if (i % 2 === 0) {
+                sansVoice.currentTime = 0;
+                sansVoice.play();
+            }
+
+            i++;
+            if (i >= text.length) {
+                clearInterval(typingTimer);
+            }
+        }, 35);
+    }
+    function resetGame() {
+        hpDisplay.textContent = "20";
+        dialogueInput.value = "";
+        correctNumber = Math.ceil(Math.random() * 20);
+        typeWriter("* let's try again.\n* this time, don't blink.");
+
+        fightBtn.classList.remove('mercy-btn');
+        fightBtn.classList.add('fight-btn');
+        fightBtn.textContent = "FIGHT";
+    }
+
+    fightBtn.addEventListener('click', function() {
+        if (fightBtn.classList.contains('fight-btn')) {
+            var guess = parseInt(dialogueInput.value, 10);
+            var hp = parseInt(hpDisplay.textContent, 10);
+            var lv = parseInt(levelDisplay.textContent, 10);
+
+            if (isNaN(guess)) {
+                typeWriter("You must enter a number!");
+            }
+            else if (guess < 1 || guess > 20) {
+                typeWriter("Maths is hard, huh?");
+            }
+            else if (guess === correctNumber) {
+                typeWriter("heh... not bad. you got it.");
+                levelDisplay.textContent = lv + 1;
+
+                fightBtn.classList.remove('fight-btn');
+                fightBtn.classList.add('mercy-btn');
+                fightBtn.textContent = "MERCY";
+                hp--;
+            }
+            else if (guess < correctNumber) {
+                typeWriter("too low. try again.");
+                hpDisplay.textContent = hp - 1;
+            }
+            else if (guess > correctNumber) {
+                typeWriter("too high. try again.");
+                hpDisplay.textContent = hp - 1;
+            }
+            else if (hpDisplay.textContent <= 0) {
+                typeWriter("you ran out of HP...\n* game over.");
+                fightBtn.classList.remove('fight-btn');
+                fightBtn.classList.add('mercy-btn');
+                fightBtn.textContent = "MERCY";
+            }
+            if (hp <= 1) {
+                typeWriter("you ran out of HP...\n* game over.");
+                fightBtn.classList.remove('fight-btn');
+                fightBtn.classList.add('mercy-btn');
+                fightBtn.textContent = "MERCY";
+            } 
+            dialogueInput.value = "";
+        }
+        else if (fightBtn.classList.contains('mercy-btn')) {
+            resetGame();
+        }
+    });
+    console.log("Correct Number (for testing): " + correctNumber);
+
+    </script>
+</body>
+</html>

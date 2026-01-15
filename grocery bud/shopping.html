@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Shopping - Grocery Buddy</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .shopping-container { display: flex; flex-direction: column; gap: 20px; }
+    .item-row { 
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--glass); padding: 15px 25px; border-radius: 18px;
+      border: 1px solid var(--glass-border); margin-bottom: 10px;
+    }
+    .item-info { display: flex; align-items: center; gap: 15px; }
+    .checkbox { width: 24px; height: 24px; cursor: pointer; border-radius: 6px; }
+    .progress-bar { 
+      width: 100%; height: 8px; background: var(--glass); 
+      border-radius: 10px; margin-bottom: 30px; overflow: hidden;
+    }
+    .progress-fill { width: 65%; height: 100%; background: var(--accent-liquid); }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="nav-item" onclick="location.href='index.html'">🏠</div>
+      <div class="nav-item active">🛒</div>
+      <div class="nav-item" onclick="location.href='meals.html'">🍽️</div>
+      <div class="nav-item" onclick="location.href='settings.html'">⚙️</div>
+    </aside>
+    <main class="main">
+      <header>
+        <h1>Weekly Groceries</h1>
+        <p>12 of 18 items collected</p>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+      </header>
+      
+      <div class="shopping-container">
+        <div class="item-row">
+          <div class="item-info">
+            <input type="checkbox" class="checkbox" checked>
+            <span>Organic Whole Milk</span>
+          </div>
+          <span class="label">Dairy</span>
+        </div>
+        <div class="item-row">
+          <div class="item-info">
+            <input type="checkbox" class="checkbox">
+            <span>Avocados (3x)</span>
+          </div>
+          <span class="label">Produce</span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

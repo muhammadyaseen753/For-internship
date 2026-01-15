@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Grocery Buddy</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<script src="app.js"></script>
+</head>
+<body>
+  <div class="app">
+ 
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="nav-item active">🏠</div>
+      <div class="nav-item">🛒</div>
+      <div class="nav-item">🍽️</div>
+      <div class="nav-item">⚙️</div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <header>
+        <h1>Welcome to Grocery Buddy</h1>
+        <p>Smart shopping & meal planning made simple</p>
+      </header>
+
+      <!-- Stats -->
+      <section class="stats">
+        <div class="card">
+          <div class="icon green">🛒</div>
+          <span class="label">This Week</span>
+          <h2>12</h2>
+          <small class="positive">↑ 2 new items</small>
+        </div>
+
+        <div class="card">
+          <div class="icon orange">🔥</div>
+          <span class="label">Total Calories</span>
+          <h2>12,450</h2>
+          <small class="positive">↑ 200 from avg</small>
+        </div>
+
+        <div class="card">
+          <div class="icon blue">📉</div>
+          <span class="label">Budget Spent</span>
+          <h2>$127.50</h2>
+          <small class="negative">↓ 15% from last week</small>
+        </div>
+
+        <div class="card">
+          <div class="icon pink">⚠️</div>
+          <span class="label">Expiring Soon</span>
+          <h2>3</h2>
+          <small class="link">Check items</small>
+        </div>
+      </section>
+
+      <!-- Recent -->
+      <section>
+        <h3>Recent Shopping Lists</h3>
+        <div class="list-card">
+          <div>
+            <strong>Weekly Groceries</strong>
+            <span>24 items · Today</span>
+          </div>
+
+          <button class="continue">Continue</button>
+        </div>
+      </section>
+      <br>
+         <section class="new-list-section">
+    <button class="btn-create" id="newListBtn">+ New list</button>
+</section>
+    </main>
+  </div>
+  <div id="listModal" class="modal">
+  <div class="modal-content">
+    <h2 id="modalTitle">New Shopping List</h2>
+    
+    <input type="text" id="listInput" placeholder="Enter list name..." class="no-bullet-input">
+    
+    <label for="dueDate">Due Date:</label>
+    <input type="date" id="dueDate">
+    
+    <div class="modal-actions">
+      <button onclick="closeModal()">Cancel</button>
+      <button id="saveBtn" onclick="saveList()">Save List</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
